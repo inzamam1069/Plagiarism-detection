@@ -1,0 +1,164 @@
+#include <iostream>
+using namespace std;
+int
+strLen(char str[])
+{
+    int i = 0;
+    while (str[i] != NULL)
+        i++;
+    return i;
+}
+
+int
+fndStr(char mainStr[], char subStr[])
+{
+
+    int y = strLen(mainStr);
+    int i = strLen(subStr);
+    int j = 0, f, ind;
+
+    for (int i = 0; i < y; i++)
+    {
+        f = 0;
+        if (mainStr[i] == subStr[j])
+        {
+            ind = i;
+            while (j < i)
+            {
+                if (mainStr[i] != subStr[j])
+                    f = 1;
+                j++;
+                i++;
+            }
+            if (j == i && f == 0)
+                return ind;
+        }
+    }
+    return -1;
+}
+
+void
+replacewithbiggerstring(char mainStr[], char replaceStr[], int ind,
+    int lfindStr)
+{
+    int y = strLen(mainStr);
+    int i = ind + lfindStr;
+    int l = strLen(replaceStr);
+    while (i < y)
+    {
+        replaceStr[l] = mainStr[i];
+        l++;
+        i++;
+    }
+
+    y = strLen(replaceStr);
+    i = 0;
+    while (i < y)
+    {
+        mainStr[ind + i] = replaceStr[i];
+        i++;
+
+    }
+}
+
+void
+replacewithsmallerstring(char mainStr[], char replaceStr[], int ind,
+    int lfindstr)
+{
+    int y = strLen(mainStr);
+    int i = ind + lfindstr;
+    int r = strLen(replaceStr);
+    while (i < y)
+    {
+        replaceStr[r] = mainStr[i];
+
+        r++;
+        i++;
+    }
+
+    y = strLen(replaceStr);
+    i = 0;
+    while (i < y)
+    {
+        mainStr[ind + i] = replaceStr[i];
+        i++;
+    }
+}
+
+void
+replacewithequalstring(char mainStr[], char replaceStr[], int index)
+{
+    int n = strLen(replaceStr);
+    int i = 0;
+    while (i < n)
+    {
+        mainStr[index + i] = replaceStr[i];
+        i++;
+
+    }
+
+}
+
+int
+findReplace(char mainStr[], char findStr[], char replaceStr[])
+{
+    int index = fndStr(mainStr, findStr);
+    if (index == -1)
+        return -1;
+    int len = strLen(findStr);
+    if (strLen(findStr) < strLen(replaceStr))
+    {
+        replacewithbiggerstring(mainStr, replaceStr, index, len);
+    }
+    else if (strLen(findStr) > strLen(replaceStr))
+    {
+        replacewithsmallerstring(mainStr, replaceStr, index, len);
+    }
+    else
+    {
+        replacewithequalstring(mainStr, replaceStr, index);
+    }
+
+    return 1;
+}
+
+void
+testFindReplace()
+{
+    char mainstr[200] = "C++ is so great and fun";
+    char findstr[50] = "great and";
+    char replacestr1[50] = "nice";
+    char replacestr2[50] = "nice and simple and";
+
+
+    cout << "Enter the String to Compute : ";
+    cin.getline(mainstr, 1000);
+    int l = strLen(mainstr);
+    cout << "Enter the String to find  : ";
+    cin.getline(findstr, 500);
+
+    cout << "Enter the String to replace with the find string:";
+    cin.getline(replacestr1, 70);
+
+    if (findReplace(mainstr, findstr, replacestr1) != -1)
+    {
+        for (int i = 0; i <= l; i++)
+        {
+            cout << mainstr[i];
+        }
+    }
+    else
+        cout <<
+        "The string you enter to replace is not found in the main string.";
+
+
+
+}
+
+int
+main()
+{
+
+    testFindReplace();
+    return 0;
+}
